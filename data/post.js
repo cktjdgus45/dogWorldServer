@@ -1,4 +1,4 @@
-let posts = [
+let posts = [ //임시 DATABASE역할.
     {
         id: '1',
         text: '포포',
