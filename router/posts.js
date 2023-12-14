@@ -1,6 +1,5 @@
 import express from 'express';
 import 'express-async-errors';
-import * as postRepository from '../data/post.js';
 import * as postController from '../controller/post.js';
 
 const router = express.Router();

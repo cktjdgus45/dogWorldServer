@@ -17,10 +17,10 @@ let posts = [ //임시 DATABASE역할..
     },
 ];
 
-export const getAll = () => posts;
-export const getAllByUsername = (username) => posts.filter(post => post.username === username);
-export const getById = (id) => posts.find(post => post.id === id);
-export const create = (text, name, username) => {
+export const getAll = async () => posts;
+export const getAllByUsername = async (username) => posts.filter(post => post.username === username);
+export const getById = async (id) => posts.find(post => post.id === id);
+export const create = async (text, name, username) => {
     const post = {
         id: Date.now().toString(),
         text,
@@ -32,13 +32,13 @@ export const create = (text, name, username) => {
     posts = [post, ...posts]; //data update
     return post;
 }
-export const update = (id, text) => {
+export const update = async (id, text) => {
     const post = posts.find(post => post.id === id);
     if (post) {
         post.text = text;
     }
     return post;
 }
-export const remove = (id) => {
+export const remove = async (id) => {
     posts.filter(post => post.id !== id);
 }
