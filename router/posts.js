@@ -1,23 +1,24 @@
 import express from 'express';
 import 'express-async-errors';
 import * as postController from '../controller/post.js';
+import { isAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // GET /posts
 // GET /posts?username=:username
-router.get('/', postController.getPosts);
+router.get('/', isAuth, postController.getPosts);
 
 // GET /posts/:id
-router.get('/:id', postController.getPost);
+router.get('/:id', isAuth, postController.getPost);
 
 // POST /posts
-router.post('/', postController.createPost);
+router.post('/', isAuth, postController.createPost);
 
 // PUT /posts/:id
-router.put('/:id', postController.updatePost);
+router.put('/:id', isAuth, postController.updatePost);
 
 // DELETE /posts/:id
-router.delete('/:id', postController.deletePost);
+router.delete('/:id', isAuth, postController.deletePost);
 
 export default router;

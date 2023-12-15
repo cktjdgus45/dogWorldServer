@@ -19,8 +19,8 @@ export const getPost = async (req, res, next) => {
 }
 
 export const createPost = async (req, res, next) => {
-    const { text, name, username } = req.body;
-    const post = await postRepository.create(text, name, username);
+    const { text } = req.body;
+    const post = await postRepository.create(text, req.userId);
     res.status(201).json(post);
 }
 
