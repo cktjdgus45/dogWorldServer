@@ -27,16 +27,31 @@ export const createPost = async (req, res, next) => {
 export const updatePost = async (req, res, next) => {
     const id = req.params.id;
     const text = req.body.text;
-    const post = await postRepository.update(id, text);
-    if (post) {
-        res.status(200).json(post);
-    } else {
-        res.status(404).json({ message: `Post id(${id}) not found` })
+    const post = await postRepository.getById(id);
+    if (!post) {
+        return res.sendStatus(404);
     }
+    if (post.userId !== req.userId) {
+        return res.sendStatus(403);
+        //HTTP 403 is an HTTP status code meaning access
+        // to the requested resource is forbidden.
+    }
+    const updatedPost = await postRepository.update(id, text);
+    res.status(200).json(updatedPost);
+    res.status(404).json({ message: `Post id(${id}) not found` })
 }
 
 export const deletePost = async (req, res, next) => {
     const id = req.params.id;
+    const post = await postRepository.getById(id);
+    if (!post) {
+        return res.sendStatus(404);
+    }
+    if (post.userId !== req.userId) {
+        return res.sendStatus(403);
+        //HTTP 403 is an HTTP status code meaning access
+        // to the requested resource is forbidden.
+    }
     await postRepository.remove(id);
     res.sendStatus(204)
 }
