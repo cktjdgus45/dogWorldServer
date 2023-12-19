@@ -7,6 +7,7 @@ import 'express-async-errors';
 import postsRouter from './router/posts.js';
 import addressRouter from './router/address.js';
 import authRouter from './router/auth.js';
+import { db } from './db/database.js';
 
 const app = express();
 const port = 8080;
@@ -27,6 +28,8 @@ app.use('/auth', authRouter);
 //     console.error(error);
 //     res.sendStatus(500);
 // })
+
+db.getConnection();
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
