@@ -12,7 +12,7 @@ const createJwtToken = (id) => {
     return jwt.sign({ id }, jwtSecretKey, { expiresIn: jwtExpiresInDays });
 }
 
-export const signup = async (req, res, next) => {
+export const signup = async (req, res) => {
     const { username, password, name, email, url } = req.body;
     const isAlreadyExistUser = await authRepository.findByUsername(username);
     if (isAlreadyExistUser) {
@@ -51,6 +51,12 @@ export const login = async (req, res, next) => {
         username
     })
 }
+
+export async function logout(req, res, next) {
+    res.cookie('token', '');
+    res.status(200).json({ message: 'User has been logged out' });
+}
+
 export const me = async (req, res, next) => {
     const user = await authRepository.findById(req.userId);
     if (!user) {

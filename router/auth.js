@@ -1,16 +1,21 @@
 import express from 'express';
 import { } from 'express-async-errors';
-import bodyParser from 'body-parser';
 import * as authController from '../controller/auth.js';
 import { isAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+const checkError = (req, res, next) => {
+    next();
+}
+
 // POST /auth/signup 
-router.post('/signup', bodyParser.json(), bodyParser.urlencoded({ extended: true }), authController.signup);
+router.post('/signup', checkError, authController.signup);
 //  POST /auth/login 
-router.post('/login', bodyParser.json(), bodyParser.urlencoded({ extended: true }), authController.login);
+router.post('/login', authController.login);
+// POST /auth/logout
+router.post('/logout', authController.logout);
 //   GET /auth/me
-router.get('/me',isAuth,authController.me);
+router.get('/me', isAuth, authController.me);
 
 export default router;

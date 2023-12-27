@@ -20,14 +20,14 @@ app.use('/posts', postsRouter);
 app.use('/address', addressRouter);
 app.use('/auth', authRouter);
 
-// app.use((req, res, next) => {
-//     res.sendStatus(404);
-// })
+app.use((req, res, next) => {
+    res.sendStatus(404);
+})
 
-// app.use((req, res, next, error) => {
-//     console.error(error);
-//     res.sendStatus(500);
-// })
+app.use((req, res, next, error) => {
+    console.error(error);
+    res.sendStatus(500);
+})
 
 db.getConnection();
 
