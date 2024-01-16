@@ -12,7 +12,6 @@ export const isAuth = async (req, res, next) => {
         //because it lacks valid authentication credentials for the target resource.
     }
     const token = authHeader.split(' ')[1];
-    console.log(token);
     //token must be more secure.
     jwt.verify(token, 'Ck"|f5AAxm{jww~nb0:MQL70:^:KjcW6', async (err, decoded) => {
         if (err) {
@@ -21,8 +20,6 @@ export const isAuth = async (req, res, next) => {
         } else {
             // Token is valid, and `decoded` contains the decoded payload
             const user = await userRepository.findById(decoded.id);
-            console.log(decoded)
-            console.log(user);
             if (!user) {
                 return res.status(401).json(AUTH_ERROR);
             }

@@ -28,7 +28,6 @@ const router = express.Router();
 //GET /address/도시명
 router.get('/:city', (req, res, next) => {
     const cityName = req.params.city;
-    console.log(cityName);
     //db.find(cityName ===cityName);
     //cityName크롤링 -> 도로명 json -> response
     if (cityName) {

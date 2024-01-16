@@ -10,6 +10,7 @@ import authRouter from './router/auth.js';
 import { db } from './db/database.js';
 
 const app = express();
+db.getConnection();
 const port = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,16 +21,15 @@ app.use('/posts', postsRouter);
 app.use('/address', addressRouter);
 app.use('/auth', authRouter);
 
-app.use((req, res, next) => {
-    res.sendStatus(404);
-})
+// app.use((req, res, next) => {
+//     res.sendStatus(404);
+// })
 
-app.use((req, res, next, error) => {
-    console.error(error);
-    res.sendStatus(500);
-})
+// app.use((req, res, next, error) => {
+//     console.error(error);
+//     res.sendStatus(500);
+// })
 
-db.getConnection();
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);

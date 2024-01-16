@@ -2,7 +2,6 @@ import * as postRepository from '../data/post.js';
 
 export const getPosts = async (req, res, next) => {
     const username = req.query.username;
-    console.log(username)
     const data = await (username ? postRepository.getAllByUsername(username) :
         postRepository.getAll());
     res.status(200).json(data);
@@ -19,6 +18,9 @@ export const getPost = async (req, res, next) => {
 }
 
 export const createPost = async (req, res, next) => {
+    console.log('Request Headers:', req.headers);
+    console.log('Request Body:', req.body);
+    console.log('Request File:', req.file);
     const { text } = req.body;
     const post = await postRepository.create(text, req.userId);
     res.status(201).json(post);
