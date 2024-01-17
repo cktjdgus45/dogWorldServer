@@ -20,12 +20,15 @@ export const getPost = async (req, res, next) => {
 
 export const createPost = async (req, res, next) => {
     const { text } = req.body;
-    const b64 = Buffer.from(req.file.buffer).toString('base64');
-    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-    const cloudinaryResponse = await handleUpload(dataURI); //문제
-    console.log(cloudinaryResponse);
-    const { secure_url: fileUrl } = cloudinaryResponse;
-    const post = await postRepository.create(text, fileUrl, req.userId);
+    let fileUrl;
+    if (req.file) {
+        const b64 = Buffer.from(req.file.buffer).toString('base64');
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cloudinaryResponse = await handleUpload(dataURI);
+        fileUrl = cloudinaryResponse.secure_url;
+    }
+    console.log(fileUrl);
+    const post = await postRepository.create(text, fileUrl ?? "", req.userId);
     res.status(201).json(post);
 }
 

@@ -31,7 +31,9 @@ export const signup = async (req, res) => {
         url
     });
     const token = createJwtToken(userId);
-    res.status(201).json({ token, username });
+    const user = await authRepository.findById(userId);
+    delete user.password;
+    res.status(201).json({ token, user });
     //The 201 Created status code means that the request was successfully fulfilled 
     //and resulted in one or possibly multiple new resources being created.
 }
@@ -45,10 +47,11 @@ export const login = async (req, res, next) => {
     if (!isValidPassword) {
         return res.status(401).json({ message: 'Invalid user or password' });
     }
+    delete user.password;
     const token = createJwtToken(user.id);
     return res.status(200).json({
-        token, //(jwt)
-        username
+        token,
+        user
     })
 }
 
@@ -59,8 +62,9 @@ export async function logout(req, res, next) {
 
 export const me = async (req, res, next) => {
     const user = await authRepository.findById(req.userId);
+    delete user.password;
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json({ token: req.token, username: user.username });
+    res.status(200).json({ token: req.token, user });
 }

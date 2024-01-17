@@ -18,4 +18,6 @@ router.post('/logout', authController.logout);
 //   GET /auth/me
 router.get('/me', isAuth, authController.me);
 
+// PUT /auth/me update profile. 추후추가할것.
+
 export default router;
