@@ -1,4 +1,5 @@
 import * as postRepository from '../data/post.js';
+import { handleUpload } from '../utils/cloudinary.js';
 
 export const getPosts = async (req, res, next) => {
     const username = req.query.username;
@@ -18,10 +19,11 @@ export const getPost = async (req, res, next) => {
 }
 
 export const createPost = async (req, res, next) => {
-    console.log('Request Headers:', req.headers);
-    console.log('Request Body:', req.body);
-    console.log('Request File:', req.file);
     const { text } = req.body;
+    const b64 = Buffer.from(req.file.buffer).toString('base64');
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const cloudinaryResponse = await handleUpload(dataURI); //문제
+    console.log(cloudinaryResponse);
     const post = await postRepository.create(text, req.userId);
     res.status(201).json(post);
 }
