@@ -22,9 +22,9 @@ export const getById = async (id) => {
         .execute(`${SELECT_JOIN} WHERE ps.id=?`, [id])
         .then((result) => result[0][0]);
 }
-export const create = async (text, userId) => {
-
-    return db.execute('INSERT INTO posts (text,createdAt,userId) VALUES(?,?,?)', [text, new Date(), userId])
+export const create = async (text, fileUrl, userId) => {
+    console.log(fileUrl);
+    return db.execute('INSERT INTO posts (text,fileUrl,createdAt,userId) VALUES(?,?,?,?)', [text, fileUrl, new Date(), userId])
         // @ts-ignore
         .then((result) => getById(result[0].insertId))
 }

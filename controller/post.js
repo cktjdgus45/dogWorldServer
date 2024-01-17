@@ -24,7 +24,9 @@ export const createPost = async (req, res, next) => {
     let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
     const cloudinaryResponse = await handleUpload(dataURI); //문제
     console.log(cloudinaryResponse);
-    const post = await postRepository.create(text, req.userId);
+    const { secure_url: fileUrl } = cloudinaryResponse;
+    console.log(fileUrl);
+    const post = await postRepository.create(text, fileUrl, req.userId);
     res.status(201).json(post);
 }
 
