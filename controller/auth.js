@@ -2,6 +2,7 @@ import * as authRepository from '../data/auth.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { } from 'express-async-errors';
+import { handleUpload } from '../utils/cloudinary.js';
 
 //임시용. 추후 보안추가 필.
 const jwtSecretKey = 'Ck"|f5AAxm{jww~nb0:MQL70:^:KjcW6';
@@ -53,6 +54,23 @@ export const login = async (req, res, next) => {
         token,
         user
     })
+}
+
+export const update = async (req, res, next) => {
+    const { username } = req.body;
+    console.log(req.body)
+    console.log(req.file)
+    let fileUrl;
+    if (req.file) {
+        const b64 = Buffer.from(req.file.buffer).toString('base64');
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cloudinaryResponse = await handleUpload(dataURI);
+        fileUrl = cloudinaryResponse.secure_url;
+    }
+    console.log(fileUrl);
+    const user = await authRepository.updateById(req.userId, username, fileUrl ?? "");
+    res.status(200).json({ token: req.token, user });
+
 }
 
 export async function logout(req, res, next) {

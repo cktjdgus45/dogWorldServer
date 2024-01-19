@@ -12,7 +12,10 @@ export const findById = async (verifiedJwtPayloadId) => {
             return result[0][0];
         })
 }
-
+export const updateById = async (id, username, url) => {
+    return db.execute('UPDATE users SET username=?, url=? WHERE id=?', [username, url, id])
+        .then(() => findById(id));
+}
 export const createUser = async ({ username, password, name, email, url }) => {
     return db.execute('INSERT INTO users (username,password,name,email,url) VALUES (?,?,?,?,?)', [
         username, password, name, email, url
