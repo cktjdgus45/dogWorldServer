@@ -57,18 +57,24 @@ export const login = async (req, res, next) => {
 }
 
 export const update = async (req, res, next) => {
-
-    const { username, cloudinaryId } = req.body;
-    console.log(req.body)
-    console.log(req.file)
+    const { username, cloudinaryId, existUrl } = req.body;
+    const isAlreadyExistUser = await authRepository.findByUsername(username);
+    if (isAlreadyExistUser) {
+        //A 409 status code is used to indicate a conflict 
+        //with the current state of a resource, 
+        //such as when trying to create or
+        //update a resource that already exists or has conflicting information
+        return res.status(409).json({ message: `${username}는 이미 존재하는 이름입니다.` });
+    }
     let fileUrl;
     if (req.file) {
         const b64 = Buffer.from(req.file.buffer).toString('base64');
         let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
         const cloudinaryResponse = await handleUpload(dataURI, cloudinaryId);
         fileUrl = cloudinaryResponse.secure_url;
+    } else {
+        fileUrl = existUrl
     }
-    console.log(fileUrl);
     const user = await authRepository.updateById(req.userId, username, fileUrl ?? "");
     res.status(200).json({ token: req.token, user });
 
