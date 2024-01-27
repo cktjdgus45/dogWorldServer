@@ -17,7 +17,7 @@ router.get('/:id', isAuth, postController.getPost);
 router.post('/', isAuth, upload.single('file'), postController.createPost);
 
 // PUT /posts/:id
-router.put('/:id', isAuth, postController.updatePost);
+router.put('/:id', isAuth, upload.single('file'), postController.updatePost);
 
 // DELETE /posts/:id
 router.delete('/:id', isAuth, postController.deletePost);

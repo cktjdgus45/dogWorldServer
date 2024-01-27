@@ -6,12 +6,12 @@ cloudinary.config({
     api_secret: 'Y0a5lKP3ioW-m-GHjkgV77MgYC4',
 })
 
-export async function handleUpload(file, cloudinaryId) {
+export async function handleUpload(file) {
     try {
 
         const result = await cloudinary.uploader.upload(file, {
             resource_type: "image",
-            public_id: cloudinaryId
+            // public_id: cloudinaryId
         });
         return result;
     } catch (error) {

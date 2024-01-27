@@ -33,9 +33,18 @@ export const createPost = async (req, res, next) => {
 }
 
 export const updatePost = async (req, res, next) => {
-    const id = req.params.id;
-    const text = req.body.text;
-    const post = await postRepository.getById(id);
+    const postId = req.params.id;
+    let fileUrl;
+    const { text, existUrl } = req.body;
+    if (req.file) {
+        const b64 = Buffer.from(req.file.buffer).toString('base64');
+        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+        const cloudinaryResponse = await handleUpload(dataURI);
+        fileUrl = cloudinaryResponse.secure_url;
+    } else {
+        fileUrl = existUrl
+    }
+    const post = await postRepository.getById(postId);
     if (!post) {
         return res.sendStatus(404);
     }
@@ -44,9 +53,9 @@ export const updatePost = async (req, res, next) => {
         //HTTP 403 is an HTTP status code meaning access
         // to the requested resource is forbidden.
     }
-    const updatedPost = await postRepository.update(id, text);
+    const updatedPost = await postRepository.update(postId, text, fileUrl ?? "");
     res.status(200).json(updatedPost);
-    res.status(404).json({ message: `Post id(${id}) not found` })
+    res.status(404).json({ message: `Post id(${postId}) not found` })
 }
 
 export const deletePost = async (req, res, next) => {

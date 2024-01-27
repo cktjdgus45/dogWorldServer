@@ -12,8 +12,8 @@ export const findById = async (verifiedJwtPayloadId) => {
             return result[0][0];
         })
 }
-export const updateById = async (id, username, url) => {
-    return db.execute('UPDATE users SET username=?, url=? WHERE id=?', [username, url, id])
+export const updateById = async (id, name, url) => {
+    return db.execute('UPDATE users SET name=?, url=? WHERE id=?', [name, url, id])
         .then(() => findById(id));
 }
 export const createUser = async ({ username, password, name, email, url }) => {

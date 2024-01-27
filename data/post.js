@@ -25,8 +25,8 @@ export const create = async (text, fileUrl, userId) => {
         // @ts-ignore
         .then((result) => getById(result[0].insertId))
 }
-export const update = async (id, text) => {
-    return db.execute('UPDATE posts SET text=? WHERE id=?', [text, id])
+export const update = async (id, text, fileUrl) => {
+    return db.execute('UPDATE posts SET text=?,fileUrl=? WHERE id=?', [text, fileUrl, id])
         .then(() => getById(id));
 }
 export const remove = async (id) => {
