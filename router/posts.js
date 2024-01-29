@@ -16,6 +16,9 @@ router.get('/:id', isAuth, postController.getPost);
 // POST /posts (Create New Post)
 router.post('/', isAuth, upload.single('file'), postController.createPost);
 
+// POST /posts (Create New Comment)
+router.post('/:id/comments', isAuth, postController.createComment);
+
 // PUT /posts/:id
 router.put('/:id', isAuth, upload.single('file'), postController.updatePost);
 

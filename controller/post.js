@@ -32,6 +32,15 @@ export const createPost = async (req, res, next) => {
     res.status(201).json(post);
 }
 
+export const createComment = async (req, res, next) => {
+    const { text } = req.body;
+    const postId = req.params.id;
+    const userId = req.userId;
+    const comments = await postRepository.createComments(text, postId, userId);
+    console.log(comments);
+    res.status(201).json(comments);
+}
+
 export const updatePost = async (req, res, next) => {
     const postId = req.params.id;
     let fileUrl;
